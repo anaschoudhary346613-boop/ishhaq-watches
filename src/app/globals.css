@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: #121c2d; /* Deep Navy Blue */
+  --color-secondary: #2c3e50; /* Charcoal */
+  --color-accent: #c5a059; /* Subtle Gold */
+  --color-background-warm: #faf9f6; /* Off-white */
+  --color-text-dark: #1a1a1a;
+  
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background-warm);
+    color: var(--color-text-dark);
+  }
+}
