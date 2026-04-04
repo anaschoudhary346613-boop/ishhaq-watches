@@ -60,3 +60,4 @@ create policy "Anyone can insert orders" on orders for insert with check ( true 
 -- Order Item Policies
 create policy "Admins can view order items" on order_items for select using ( auth.role() = 'authenticated' );
 create policy "Anyone can insert order items" on order_items for insert with check ( true ); -- Allow public checkout submissions
+

@@ -57,7 +57,7 @@ export default function CheckoutPage() {
       clearCart();
 
       // Open WhatsApp with pre-filled payment proof message
-      const waMessage = `Hello ISHHAQ & CO! 🕰️ I have just placed an order and completed my UPI payment.\n\nMy Order ID is: *#${orderData?.id?.slice(0, 8).toUpperCase()}*\nOrder Total: ₹${total.toLocaleString("en-IN")}\n\nCould you please verify and confirm my dispatch?`;
+      const waMessage = `Hello ISHAAQ & CO! 🕰️ I have just placed an order and completed my UPI payment.\n\nMy Order ID is: *#${orderData?.id?.slice(0, 8).toUpperCase()}*\nOrder Total: ₹${total.toLocaleString("en-IN")}\n\nCould you please verify and confirm my dispatch?`;
       const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919890902869";
       window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`, "_blank");
 
@@ -226,3 +226,4 @@ export default function CheckoutPage() {
     </div>
   );
 }
+

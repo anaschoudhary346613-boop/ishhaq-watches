@@ -4,8 +4,8 @@ import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { Copy, CheckCheck, Smartphone } from "lucide-react";
 
-const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || "ishhaq@upi";
-const MERCHANT_NAME = "ISHHAQ & CO";
+const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || "ISHAAQ@upi";
+const MERCHANT_NAME = "ISHAAQ & CO";
 
 interface UPIPaymentProps {
   total: number;
@@ -15,7 +15,7 @@ export function UPIPayment({ total }: UPIPaymentProps) {
   const [copied, setCopied] = useState(false);
 
   // Standard UPI deep-link URI — works natively with all UPI apps
-  const upiUri = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR&tn=${encodeURIComponent("Order from ISHHAQ & CO")}`;
+  const upiUri = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${total}&cu=INR&tn=${encodeURIComponent("Order from ISHAAQ & CO")}`;
 
   // GPay, PhonePe, Paytm use the same UPI URI scheme on mobile
   const upiApps = [
@@ -134,3 +134,4 @@ export function UPIPayment({ total }: UPIPaymentProps) {
     </div>
   );
 }
+

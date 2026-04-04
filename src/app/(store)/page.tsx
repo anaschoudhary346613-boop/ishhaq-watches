@@ -10,7 +10,7 @@ const MOCK_PRODUCTS = [
   {
     id: "1",
     name: "Classic Rose Gold Dress Watch",
-    brand: "ISHHAQ & CO Classic",
+    brand: "ISHAAQ & CO Classic",
     price: 18500,
     salePrice: 17000,
     imageUrl: "/luxury_watch_1.png",
@@ -18,7 +18,7 @@ const MOCK_PRODUCTS = [
   {
     id: "2",
     name: "Oceanic Stainless Steel Diver",
-    brand: "ISHHAQ & CO Sport",
+    brand: "ISHAAQ & CO Sport",
     price: 14200,
     imageUrl: "/luxury_watch_2.png",
   },
@@ -189,7 +189,7 @@ export default function Home() {
               A Personal Investment <br /> in Excellence
             </h2>
             <p className="text-gray-500 leading-relaxed text-lg font-light">
-              At ISHHAQ & CO, we believe a timepiece is more than a tool for measurement. It is an heirloom, a story, and a statement of character. Our master curators hand-select each piece to ensure it meets our rigorous standards of authenticity and timeless aesthetic.
+              At ISHAAQ & CO, we believe a timepiece is more than a tool for measurement. It is an heirloom, a story, and a statement of character. Our master curators hand-select each piece to ensure it meets our rigorous standards of authenticity and timeless aesthetic.
             </p>
             <div className="grid grid-cols-2 gap-8 pt-4">
               <div>
@@ -228,5 +228,6 @@ export default function Home() {
     </div>
   );
 }
+
 
 

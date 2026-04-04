@@ -48,7 +48,7 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex flex-col items-center group lg:absolute lg:left-1/2 lg:-translate-x-1/2">
           <span className="font-serif text-2xl tracking-wide text-[#121c2d]">
-            ISHHAQ & CO
+            ISHAAQ & CO
           </span>
           <span className="text-[10px] tracking-[0.2em] uppercase text-gray-500">
             Timepiece
@@ -96,3 +96,4 @@ export function Navbar() {
     </header>
   );
 }
+

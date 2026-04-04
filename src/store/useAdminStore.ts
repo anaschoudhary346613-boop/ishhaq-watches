@@ -53,7 +53,7 @@ const mockProducts: Product[] = [
   {
     id: "1",
     name: "Classic Rose Gold Dress Watch",
-    brand: "ISHHAQ & CO Classic",
+    brand: "ISHAAQ & CO Classic",
     price: 18500,
     salePrice: 17000,
     imageUrl: "/luxury_watch_1.png",
@@ -61,7 +61,7 @@ const mockProducts: Product[] = [
   {
     id: "2",
     name: "Oceanic Stainless Steel Diver",
-    brand: "ISHHAQ & CO Sport",
+    brand: "ISHAAQ & CO Sport",
     price: 14200,
     imageUrl: "/luxury_watch_2.png",
   },
@@ -79,3 +79,4 @@ export const useAdminStore = create<AdminStore>((set) => ({
   addProduct: (product) => set((state) => ({ products: [...state.products, product] })),
   deleteProduct: (id) => set((state) => ({ products: state.products.filter(p => p.id !== id) }))
 }));
+

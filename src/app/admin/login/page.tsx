@@ -15,7 +15,7 @@ export default function AdminLogin() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Dummy authentication
-    if (email === "admin@ishhaq.com" && password === "luxury") {
+    if (email === "admin@ISHAAQ.com" && password === "luxury") {
       login();
       router.push("/admin/orders");
     } else {
@@ -37,7 +37,7 @@ export default function AdminLogin() {
         <form onSubmit={handleLogin} className="space-y-6">
           {error && (
             <div className="p-3 bg-red-50 text-red-600 text-sm border border-red-200">
-              Invalid credentials. Try admin@ishhaq.com / luxury.
+              Invalid credentials. Try admin@ISHAAQ.com / luxury.
             </div>
           )}
           <div>
@@ -71,3 +71,4 @@ export default function AdminLogin() {
     </div>
   );
 }
+

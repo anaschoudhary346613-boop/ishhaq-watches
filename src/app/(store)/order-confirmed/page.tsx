@@ -12,7 +12,7 @@ function OrderConfirmedContent() {
   const email = params.get("email") || "";
   const total = params.get("total") || "0";
 
-  const whatsappMessage = `Hello ISHHAQ & CO, I have placed an order (ID: #${orderId}) for ₹${Number(total).toLocaleString("en-IN")} and completed the UPI payment. Please confirm receipt.`;
+  const whatsappMessage = `Hello ISHAAQ & CO, I have placed an order (ID: #${orderId}) for ₹${Number(total).toLocaleString("en-IN")} and completed the UPI payment. Please confirm receipt.`;
 
   return (
     <div className="min-h-screen bg-[#faf9f6] flex items-center justify-center px-6 py-20">
@@ -119,3 +119,4 @@ export default function OrderConfirmedPage() {
     </Suspense>
   );
 }
+

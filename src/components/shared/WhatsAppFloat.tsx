@@ -4,7 +4,7 @@ import Link from "next/link";
 export function WhatsAppFloat() {
   // Replace with the business owner's actual phone number
   const phoneNumber = "919890902869";
-  const message = "Hello, I'm interested in ISHHAQ & CO collections. Can you help me?";
+  const message = "Hello, I'm interested in ISHAAQ & CO collections. Can you help me?";
 
   return (
     <Link
@@ -18,3 +18,4 @@ export function WhatsAppFloat() {
     </Link>
   );
 }
+

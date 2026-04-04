@@ -82,7 +82,7 @@ export default function AdminDashboard() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-serif text-[#121c2d]">Dashboard</h1>
-        <p className="text-sm text-gray-500 mt-1">Welcome back to ISHHAQ & CO admin.</p>
+        <p className="text-sm text-gray-500 mt-1">Welcome back to ISHAAQ & CO admin.</p>
       </div>
 
       {/* Stats Grid */}
@@ -180,3 +180,4 @@ export default function AdminDashboard() {
     </div>
   );
 }
+

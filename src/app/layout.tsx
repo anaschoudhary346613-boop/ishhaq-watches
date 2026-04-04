@@ -13,7 +13,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "ISHHAQ & CO - Premium Watches",
+  title: "ISHAAQ & CO - Premium Watches",
   description: "Curated collection of luxury and vintage timepieces.",
 };
 
@@ -30,3 +30,4 @@ export default function RootLayout({
     </html>
   );
 }
+

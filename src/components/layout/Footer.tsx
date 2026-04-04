@@ -7,7 +7,7 @@ export function Footer() {
         <div className="col-span-1 md:col-span-2">
           <Link href="/" className="inline-block mb-6">
             <span className="font-serif text-2xl tracking-wide text-white block">
-              ISHHAQ & CO
+              ISHAAQ & CO
             </span>
             <span className="text-[10px] tracking-[0.2em] uppercase text-gray-400">
               Timepiece
@@ -38,7 +38,7 @@ export function Footer() {
       </div>
       
       <div className="max-w-7xl mx-auto pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
-        <p>&copy; {new Date().getFullYear()} ISHHAQ & CO. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} ISHAAQ & CO. All rights reserved.</p>
         <div className="mt-4 md:mt-0 flex space-x-6">
           <span>Secure Payments</span>
           <span>Global Shipping</span>
@@ -47,3 +47,4 @@ export function Footer() {
     </footer>
   );
 }
+

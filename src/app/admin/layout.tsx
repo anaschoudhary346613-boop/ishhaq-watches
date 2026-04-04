@@ -34,7 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="flex min-h-screen bg-gray-50 font-sans relative">
       {/* Mobile Toggle Button */}
       <div className="lg:hidden fixed top-0 w-full bg-white border-b border-gray-200 z-30 px-6 py-4 flex items-center justify-between">
-        <span className="font-serif text-lg tracking-wide text-[#121c2d]">ISHHAQ & CO Admin</span>
+        <span className="font-serif text-lg tracking-wide text-[#121c2d]">ISHAAQ & CO Admin</span>
         <button 
           onClick={() => setIsSidebarOpen(true)}
           className="p-2 -mr-2 bg-gray-100 rounded text-[#121c2d]"
@@ -65,7 +65,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         <div className="px-8 pb-8 mb-8 border-b border-gray-700/50">
           <Link href="/" className="font-serif text-xl tracking-widest text-white block">
-            ISHHAQ & CO
+            ISHAAQ & CO
             <span className="block text-[10px] tracking-widest text-gray-400 mt-1">ADMIN PORTAL</span>
           </Link>
         </div>
@@ -117,3 +117,4 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </div>
   );
 }
+

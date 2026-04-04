@@ -43,7 +43,7 @@ export default function RegisterPage() {
       <div className="min-h-screen flex items-center justify-center bg-[#faf9f6] px-4 pt-20">
         <div className="max-w-md w-full bg-white p-10 shadow-sm border border-gray-100 text-center">
           <h2 className="text-2xl font-serif text-[#121c2d] mb-4">Account Created</h2>
-          <p className="text-gray-600 text-sm mb-6">Welcome to ISHHAQ & CO. You will be redirected to the login page momentarily.</p>
+          <p className="text-gray-600 text-sm mb-6">Welcome to ISHAAQ & CO. You will be redirected to the login page momentarily.</p>
           <div className="w-8 h-8 border-2 border-[#121c2d] border-t-transparent rounded-full animate-spin mx-auto"></div>
         </div>
       </div>
@@ -120,3 +120,4 @@ export default function RegisterPage() {
     </div>
   );
 }
+
