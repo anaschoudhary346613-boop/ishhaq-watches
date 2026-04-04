@@ -53,21 +53,6 @@ export default function CheckoutPage() {
 
       if (error) throw error;
 
-      // Fire confirmation email (non-blocking)
-      if (orderData) {
-        fetch("/api/send-order-email", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            customerName: formData.name,
-            email: formData.email,
-            address: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`,
-            total: total,
-            orderId: orderData.id,
-          }),
-        }).catch(() => {});
-      }
-
       // Clear cart
       clearCart();
 
