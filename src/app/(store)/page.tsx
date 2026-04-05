@@ -5,29 +5,20 @@ import Link from "next/link";
 import { useCartStore } from "@/store/useCartStore";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-
-const MOCK_PRODUCTS = [
-  {
-    id: "1",
-    name: "Classic Rose Gold Dress Watch",
-    brand: "ISHAAQ & CO Classic",
-    price: 18500,
-    salePrice: 17000,
-    imageUrl: "/luxury_watch_1.png",
-  },
-  {
-    id: "2",
-    name: "Oceanic Stainless Steel Diver",
-    brand: "ISHAAQ & CO Sport",
-    price: 14200,
-    imageUrl: "/luxury_watch_2.png",
-  },
-];
+import { useScrollReveal } from "@/lib/hooks";
+import { Newsletter } from "@/components/layout/Newsletter";
+import { ReviewCarousel } from "@/components/store/ReviewCarousel";
 
 export default function Home() {
   const { addItem } = useCartStore();
-  const [products, setProducts] = useState(MOCK_PRODUCTS);
+  const [products, setProducts] = useState<any[]>([]);
+  const [selectedBrand, setSelectedBrand] = useState<string>("All Brands");
+  const [priceRange, setPriceRange] = useState<string>("All");
+  
   const supabase = createClient();
+  
+  // Activate scroll animations
+  useScrollReveal();
 
   useEffect(() => {
     async function fetchProducts() {
@@ -40,7 +31,7 @@ export default function Home() {
           brand: p.brand,
           price: p.regular_price,
           salePrice: p.sale_price,
-          imageUrl: p.image_url || "/luxury_watch_1.png",
+          imageUrl: (p.images && p.images.length > 0) ? p.images[0] : (p.image_url || "/luxury_watch_1.png"),
         }));
         setProducts(realProducts);
       }
@@ -65,18 +56,24 @@ export default function Home() {
     <div className="flex flex-col w-full">
       {/* Hero Section */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/hero_watch_image.png"
-            alt="Luxury Watch Background"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 z-0 bg-[#0a0f18]">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/hero_watch_image.png"
+            className="w-full h-full object-cover opacity-60 mix-blend-luminosity scale-105"
+          >
+            {/* The source assumes you will drop a 'hero_video.mp4' into the public directory. 
+                Using the poster image as a beautiful fallback until the video is uploaded. */}
+            <source src="/hero_video.mp4" type="video/mp4" />
+          </video>
+          {/* Subtle gradient overlay for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#121c2d] via-[#121c2d]/50 to-transparent mix-blend-multiply" />
         </div>
 
-        <div className="relative z-10 text-center px-6 mt-16 max-w-4xl mx-auto">
+        <div className="relative z-10 text-center px-6 mt-16 max-w-4xl mx-auto reveal">
           <p className="text-[#c5a059] uppercase tracking-[0.3em] font-medium text-sm mb-4">
             A Legacy of Time
           </p>
@@ -96,85 +93,143 @@ export default function Home() {
       </section>
 
       {/* Featured Collection Section */}
-      <section id="collection" className="py-32 px-6 bg-[#faf9f6]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl font-serif text-[#121c2d] mb-4">Best Sellers</h2>
+      <section id="collection" className="py-24 md:py-32 px-6 bg-[#faf9f6]">
+        <div className="max-w-7xl mx-auto reveal">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-serif text-[#121c2d] mb-4">The Collection</h2>
             <div className="w-16 h-0.5 bg-[#c5a059] mx-auto"></div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            {products.map((product) => (
-              <div key={product.id} className="group cursor-pointer">
-                {/* Image Card */}
-                <Link href={`/product/${product.id}`} className="block">
-                  <div className="relative bg-white aspect-[4/5] mb-6 overflow-hidden flex items-center justify-center p-8 transition-shadow hover:shadow-xl">
-                    {product.salePrice && (
-                      <div className="absolute top-4 left-4 bg-[#121c2d] text-white text-xs uppercase tracking-wider px-3 py-1 z-10">
-                        Save {Math.round((1 - product.salePrice / product.price) * 100)}%
-                      </div>
-                    )}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="object-contain group-hover:scale-105 transition-transform duration-700 w-full h-full"
-                    />
-                    {/* Hover Add to Cart Button */}
-                    <div className="absolute bottom-0 w-full translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          addItem({
-                            id: product.id,
-                            name: product.name,
-                            brand: product.brand,
-                            price: product.salePrice || product.price,
-                            imageUrl: product.imageUrl,
-                          });
-                        }}
-                        className="w-full bg-[#121c2d]/95 backdrop-blur text-white py-4 font-medium uppercase tracking-widest text-sm hover:bg-[#c5a059] transition-colors"
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                </Link>
+          {/* Filter Bar */}
+          {products.length > 0 && (
+            <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-16 border-y border-gray-200 py-6">
+              <span className="text-xs uppercase tracking-widest text-[#121c2d] font-bold mr-2 hidden md:block">Filter By:</span>
+              
+              <select 
+                value={selectedBrand}
+                onChange={(e) => setSelectedBrand(e.target.value)}
+                className="bg-transparent border border-gray-300 text-sm py-2 px-4 focus:outline-none focus:border-[#c5a059] cursor-pointer w-full md:w-auto"
+              >
+                <option value="All Brands">All Brands</option>
+                {Array.from(new Set(products.map(p => p.brand))).map(brand => (
+                  <option key={brand as string} value={brand as string}>{brand as string}</option>
+                ))}
+              </select>
 
-                {/* Product Info */}
-                <div className="text-center">
-                  <p className="text-xs uppercase tracking-widest text-gray-500 mb-2">{product.brand}</p>
-                  <Link href={`/product/${product.id}`}>
-                    <h3 className="text-lg font-serif text-[#121c2d] mb-2 group-hover:text-[#c5a059] transition-colors">
-                      {product.name}
-                    </h3>
+              <select 
+                value={priceRange}
+                onChange={(e) => setPriceRange(e.target.value)}
+                className="bg-transparent border border-gray-300 text-sm py-2 px-4 focus:outline-none focus:border-[#c5a059] cursor-pointer w-full md:w-auto"
+              >
+                <option value="All">Any Price</option>
+                <option value="Under ₹50k">Under ₹50,000</option>
+                <option value="₹50k - ₹2L">₹50,000 - ₹2,00,000</option>
+                <option value="Over ₹2L">Over ₹2,00,000</option>
+              </select>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+            {products.length > 0 ? (
+              (() => {
+                const filteredProducts = products.filter(p => {
+                  if (selectedBrand !== "All Brands" && p.brand !== selectedBrand) return false;
+                  if (priceRange !== "All") {
+                    const price = p.salePrice || p.price;
+                    if (priceRange === "Under ₹50k" && price >= 50000) return false;
+                    if (priceRange === "₹50k - ₹2L" && (price < 50000 || price > 200000)) return false;
+                    if (priceRange === "Over ₹2L" && price <= 200000) return false;
+                  }
+                  return true;
+                });
+                
+                if (filteredProducts.length === 0) {
+                  return (
+                    <div className="col-span-full py-16 text-center">
+                      <p className="text-gray-500 font-light italic text-lg">No pieces found matching your criteria.</p>
+                      <button onClick={() => { setSelectedBrand("All Brands"); setPriceRange("All"); }} className="mt-4 text-[#c5a059] text-xs uppercase tracking-widest hover:underline">Clear Filters</button>
+                    </div>
+                  );
+                }
+
+                return filteredProducts.map((product) => (
+                <div key={product.id} className="group cursor-pointer">
+                  {/* Image Card */}
+                  <Link href={`/product/${product.id}`} className="block">
+                    <div className="relative bg-white aspect-[4/5] mb-6 overflow-hidden flex items-center justify-center p-8 transition-shadow hover:shadow-xl">
+                      {product.salePrice && (
+                        <div className="absolute top-4 left-4 bg-[#121c2d] text-white text-xs uppercase tracking-wider px-3 py-1 z-10">
+                          Save {Math.round((1 - product.salePrice / product.price) * 100)}%
+                        </div>
+                      )}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="object-contain group-hover:scale-105 transition-transform duration-700 w-full h-full"
+                      />
+                      {/* Hover Add to Cart Button */}
+                      <div className="absolute bottom-0 w-full translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            addItem({
+                              id: product.id,
+                              name: product.name,
+                              brand: product.brand,
+                              price: product.salePrice || product.price,
+                              imageUrl: product.imageUrl,
+                            });
+                          }}
+                          className="w-full bg-[#121c2d]/95 backdrop-blur text-white py-4 font-medium uppercase tracking-widest text-sm hover:bg-[#c5a059] transition-colors"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
                   </Link>
-                  <div className="flex justify-center items-center gap-3">
-                    {product.salePrice ? (
-                      <>
-                        <span className="text-gray-400 line-through text-sm">
+
+                  {/* Product Info */}
+                  <div className="text-center">
+                    <p className="text-xs uppercase tracking-widest text-gray-500 mb-2">{product.brand}</p>
+                    <Link href={`/product/${product.id}`}>
+                      <h3 className="text-lg font-serif text-[#121c2d] mb-2 group-hover:text-[#c5a059] transition-colors">
+                        {product.name}
+                      </h3>
+                    </Link>
+                    <div className="flex justify-center items-center gap-3">
+                      {product.salePrice ? (
+                        <>
+                          <span className="text-gray-400 line-through text-sm">
+                            ₹{product.price.toLocaleString()}
+                          </span>
+                          <span className="text-[#c5a059] font-medium">
+                            ₹{product.salePrice.toLocaleString()}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-[#121c2d] font-medium">
                           ₹{product.price.toLocaleString()}
                         </span>
-                        <span className="text-[#c5a059] font-medium">
-                          ₹{product.salePrice.toLocaleString()}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="text-[#121c2d] font-medium">
-                        ₹{product.price.toLocaleString()}
-                      </span>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
+              ));
+              })()
+            ) : (
+              <div className="col-span-full py-20 text-center animate-pulse">
+                <p className="text-gray-400 font-light italic mb-2 tracking-widest uppercase text-xs">Curating our next collection</p>
+                <div className="w-12 h-0.5 bg-[#c5a059]/20 mx-auto"></div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
 
       {/* Heritage / Lifestyle Section */}
       <section className="bg-white py-32 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center reveal">
           <div className="relative aspect-[4/5] bg-[#faf9f6] rounded-sm group overflow-hidden">
             <Image
               src="/lifestyle_experience.png"
@@ -208,7 +263,7 @@ export default function Home() {
       </section>
 
       {/* Trust Bar */}
-      <section className="bg-[#121c2d] py-20">
+      <section className="bg-[#121c2d] py-20 reveal">
         <div className="max-w-7xl mx-auto px-6 flex flex-wrap justify-center gap-12 md:gap-24 items-center opacity-70">
           <div className="text-center">
             <p className="text-white font-serif text-xl mb-1">Lifetime</p>
@@ -224,6 +279,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ReviewCarousel />
+
+      <Newsletter />
 
     </div>
   );

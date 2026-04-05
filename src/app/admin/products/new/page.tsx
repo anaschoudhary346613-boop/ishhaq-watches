@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
-import { ArrowLeft, Upload, CheckCircle2, XCircle } from "lucide-react";
+import { ConnectionDiagnostic } from "@/components/admin/ConnectionDiagnostic";
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -134,8 +134,16 @@ export default function AddProductPage() {
       }, 1500);
 
     } catch (err: any) {
-      console.error(err);
-      showToast("error", err.message || "An unexpected error occurred.");
+      console.error("Product creation error:", err);
+      
+      let message = err.message || "An unexpected error occurred.";
+      
+      // Provide more helpful message for common Supabase failures
+      if (message.includes("Failed to fetch")) {
+        message = "Image Upload Failed: Could not connect to Supabase Storage. Please ensure the 'product-images' bucket is created and set to 'Public' in your Supabase dashboard.";
+      }
+      
+      showToast("error", message);
     } finally {
       setIsSubmitting(false);
     }
@@ -157,6 +165,8 @@ export default function AddProductPage() {
         </Link>
         <h1 className="text-2xl font-serif text-[#121c2d]">Add New Watch</h1>
       </div>
+
+      <ConnectionDiagnostic />
 
       <div className="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-gray-100">
         <form onSubmit={handleSubmit} className="space-y-6">

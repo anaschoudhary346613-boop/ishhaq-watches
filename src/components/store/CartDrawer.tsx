@@ -38,6 +38,24 @@ export function CartDrawer() {
         </div>
 
         <div className="flex-1 overflow-y-auto p-6">
+          {items.length > 0 && (
+            <div className="mb-8 p-4 bg-[#faf9f6] border border-gray-100 rounded-sm">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-[10px] uppercase tracking-widest font-bold text-gray-500">
+                  {total >= 100000 ? "✓ Complimentary Express Shipping" : "Shipping Status"}
+                </span>
+                <span className="text-[10px] font-medium text-[#c5a059]">
+                  {total >= 100000 ? "Qualified" : `₹${(100000 - total).toLocaleString()} to free shipping`}
+                </span>
+              </div>
+              <div className="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-[#c5a059] transition-all duration-1000 ease-out"
+                  style={{ width: `${Math.min(100, (total / 100000) * 100)}%` }}
+                />
+              </div>
+            </div>
+          )}
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-500 space-y-4">
               <ShoppingBag className="w-12 h-12 opacity-20" />

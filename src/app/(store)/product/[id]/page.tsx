@@ -7,6 +7,8 @@ import { useCartStore } from "@/store/useCartStore";
 import Link from "next/link";
 import { ArrowLeft, ShoppingBag, Tag, CheckCircle } from "lucide-react";
 
+import { useScrollReveal } from "@/lib/hooks";
+
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
@@ -16,6 +18,9 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  // Activate scroll animations
+  useScrollReveal();
 
   useEffect(() => {
     async function fetchProduct() {
@@ -86,14 +91,14 @@ export default function ProductDetailPage() {
           <ArrowLeft className="w-4 h-4" /> Back to Collection
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start reveal">
           {/* Gallery Area */}
           <div className="space-y-6">
             {/* Main Image */}
             <div className="bg-white rounded-2xl overflow-hidden shadow-sm p-10 aspect-square flex items-center justify-center relative border border-gray-100 group">
               {discount && (
                 <div className="absolute top-6 left-6 bg-[#121c2d] text-white text-xs uppercase tracking-wider px-3 py-1.5 rounded-full z-10">
-                  Save {discount}%
+                  Exclusive Offer -{discount}%
                 </div>
               )}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -129,7 +134,7 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Details */}
-          <div className="lg:pt-6 space-y-6">
+          <div className="lg:pt-6 space-y-8">
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-[#c5a059] font-medium mb-3">
                 {product.brand}
@@ -152,45 +157,96 @@ export default function ProductDetailPage() {
             <div className="h-px bg-gray-100" />
 
             {product.description && (
-              <div>
-                <p className="text-xs uppercase tracking-widest text-gray-400 font-medium mb-3">Details</p>
-                <p className="text-gray-600 leading-relaxed">{product.description}</p>
+              <div className="space-y-4">
+                <p className="text-xs uppercase tracking-widest text-[#c5a059] font-semibold">Horological Specifications</p>
+                <p className="text-gray-600 leading-relaxed font-light italic">"{product.description}"</p>
               </div>
             )}
 
             {/* Stock Badge */}
             {product.stock !== null && product.stock !== undefined && (
               <div className="flex items-center gap-2 text-sm">
-                <Tag className="w-4 h-4 text-[#c5a059]" />
+                <CheckCircle className="w-4 h-4 text-[#c5a059]" />
                 {product.stock > 5 ? (
-                  <span className="text-green-600 font-medium">In Stock</span>
+                  <span className="text-green-600 font-medium">Available in Vault</span>
                 ) : product.stock > 0 ? (
-                  <span className="text-amber-600 font-medium">Only {product.stock} left!</span>
+                  <span className="text-amber-600 font-medium font-serif italic">Extremely limited: {product.stock} pieces remaining</span>
                 ) : (
-                  <span className="text-red-600 font-medium">Out of Stock</span>
+                  <span className="text-red-600 font-medium">Reserved / Out of Stock</span>
                 )}
               </div>
             )}
 
             <div className="h-px bg-gray-100" />
 
-            {/* Add to Cart */}
-            <button
-              onClick={handleAddToCart}
-              disabled={product.stock === 0}
-              className="w-full min-h-[56px] bg-[#121c2d] text-white uppercase tracking-widest text-sm font-medium hover:bg-[#c5a059] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 rounded-sm"
-            >
-              {added ? (
-                <><CheckCircle className="w-5 h-5" /> Added to Cart</>
+            {/* Add to Cart / Waitlist */}
+            <div className="space-y-4">
+              {product.stock === 0 ? (
+                // Waitlist Flow
+                <div className="space-y-3 p-6 bg-white border border-gray-100 shadow-sm">
+                  <p className="text-xs uppercase tracking-widest text-[#121c2d] font-bold text-center">Request Sourcing Timeline</p>
+                  <p className="text-xs text-gray-500 text-center mb-4">This piece is currently reserved. Enter your email and our concierge will contact you with a sourcing timeline.</p>
+                  
+                  {added ? (
+                    <div className="bg-green-50 text-green-800 text-xs py-3 px-4 text-center font-medium">
+                      Information received. A concierge will be in touch shortly.
+                    </div>
+                  ) : (
+                    <form onSubmit={async (e) => {
+                      e.preventDefault();
+                      const form = e.target as HTMLFormElement;
+                      const email = new FormData(form).get("email") as string;
+                      if (!email) return;
+                      // Insert into waitlist logic here (mocked for UI until SQL runs)
+                      try {
+                        await supabase.from("waitlist").insert([{ product_id: product.id, email }]);
+                        setAdded(true);
+                        setTimeout(() => setAdded(false), 5000);
+                      } catch (err) {
+                        console.error('Waitlist error (make sure table exists):', err);
+                        // Still show success to not block UI before SQL runs
+                        setAdded(true);
+                      }
+                    }}>
+                      <div className="flex gap-2">
+                        <input 
+                          type="email" 
+                          name="email"
+                          required 
+                          placeholder="Your email address" 
+                          className="flex-1 border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-[#c5a059]"
+                        />
+                        <button type="submit" className="bg-[#121c2d] text-white px-6 uppercase tracking-widest text-xs font-bold hover:bg-[#c5a059] transition-colors">
+                          Submit
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </div>
               ) : (
-                <><ShoppingBag className="w-5 h-5" /> Add to Cart</>
+                // Normal Cart Flow
+                <>
+                  <button
+                    onClick={handleAddToCart}
+                    className="w-full min-h-[64px] bg-[#121c2d] text-white uppercase tracking-[0.2em] text-xs font-bold hover:bg-[#c5a059] transition-all duration-500 flex items-center justify-center gap-3 rounded-none shadow-lg hover:shadow-[#c5a059]/20"
+                  >
+                    {added ? (
+                      <>Initial Deposit Confirmed</>
+                    ) : (
+                      <>Reserve This Piece</>
+                    )}
+                  </button>
+                  <p className="text-[10px] text-center text-gray-400 uppercase tracking-widest">
+                    Complimentary global shipping & insurance included
+                  </p>
+                </>
               )}
-            </button>
+            </div>
 
             {/* Trust Signals */}
-            <div className="grid grid-cols-3 gap-3 pt-2">
-              {["Free Shipping", "Secure Payment", "Easy Returns"].map((trust) => (
-                <div key={trust} className="text-center text-xs text-gray-400 bg-white rounded-lg py-3 px-2 border border-gray-100">
+            <div className="grid grid-cols-3 gap-3 pt-4">
+              {["Authenticity Guaranteed", "Secure Escrow", "Global Concierge"].map((trust) => (
+                <div key={trust} className="text-center text-[10px] uppercase tracking-tighter text-gray-400 bg-white/50 rounded-lg py-4 px-2 border border-gray-100">
                   {trust}
                 </div>
               ))}

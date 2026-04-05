@@ -30,9 +30,9 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 w-full z-40 transition-all duration-300",
+        "fixed top-0 w-full z-40 transition-all duration-500",
         isScrolled
-          ? "bg-white/90 backdrop-blur-md shadow-sm py-4"
+          ? "glass shadow-sm py-3 border-b border-gray-100"
           : "bg-transparent py-6"
       )}
     >

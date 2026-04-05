@@ -3,7 +3,7 @@
 import { useAdminStore } from "@/store/useAdminStore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Package2 } from "lucide-react";
+import { Search, Package2, Trash2 } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 
 export default function AdminOrders() {
@@ -48,6 +48,21 @@ export default function AdminOrders() {
     const { error } = await supabase.from("orders").update({ status }).eq("id", id);
     if (!error) {
       setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status } : o)));
+    } else {
+      console.error(error);
+      alert("Failed to update status. Please make sure RLS policies allow Admin to UPDATE the orders table.\n\nError: " + error.message);
+    }
+  };
+
+  const deleteOrder = async (id: string) => {
+    if (confirm("Are you sure you want to completely delete this order?")) {
+      const { error } = await supabase.from("orders").delete().eq("id", id);
+      if (!error) {
+        setOrders((prev) => prev.filter((o) => o.id !== id));
+      } else {
+        console.error(error);
+        alert("Failed to delete order. Check RLS policies.\n\nError: " + error.message);
+      }
     }
   };
 
@@ -69,17 +84,17 @@ export default function AdminOrders() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-serif text-[#121c2d]">Orders</h1>
           <p className="text-sm text-gray-500 mt-1">{orders.length} total orders</p>
         </div>
-        <div className="relative">
+        <div className="relative w-full md:w-auto">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             placeholder="Search orders..."
-            className="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:border-[#c5a059] text-sm w-64"
+            className="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:border-[#c5a059] text-sm w-full md:w-64"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -134,16 +149,25 @@ export default function AdminOrders() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <select
-                      className="text-xs border border-gray-200 rounded px-2 py-1.5 bg-white focus:outline-none focus:border-[#c5a059] min-h-[36px]"
-                      value={order.status}
-                      onChange={(e) => updateStatus(order.id, e.target.value)}
-                    >
-                      <option value="Processing">Processing</option>
-                      <option value="Shipped">Shipped</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Cancelled">Cancelled</option>
-                    </select>
+                    <div className="flex items-center justify-end gap-2">
+                      <select
+                        className="text-xs border border-gray-200 rounded px-2 py-1.5 bg-white focus:outline-none focus:border-[#c5a059] min-h-[36px]"
+                        value={order.status}
+                        onChange={(e) => updateStatus(order.id, e.target.value)}
+                      >
+                        <option value="Processing">Processing</option>
+                        <option value="Shipped">Shipped</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                      </select>
+                      <button
+                        onClick={() => deleteOrder(order.id)}
+                        className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                        title="Delete Order"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

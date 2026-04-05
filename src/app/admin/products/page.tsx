@@ -58,20 +58,20 @@ export default function AdminProducts() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <h1 className="text-3xl font-serif text-[#121c2d]">Inventory</h1>
-        <div className="flex items-center gap-4">
-          <div className="relative">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Search products..."
-              className="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:border-[#c5a059] text-sm w-64"
+              className="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:border-[#c5a059] text-sm w-full sm:w-64"
             />
           </div>
           <Link 
             href="/admin/products/new"
-            className="flex items-center gap-2 bg-[#121c2d] text-white px-4 py-2 rounded shadow text-sm hover:bg-[#1a2942] transition-colors min-h-[44px]"
+            className="flex items-center justify-center gap-2 bg-[#121c2d] text-white px-4 py-2 rounded shadow text-sm hover:bg-[#1a2942] transition-colors min-h-[44px] whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
             Add Product

@@ -17,6 +17,11 @@ export const metadata: Metadata = {
   description: "Curated collection of luxury and vintage timepieces.",
 };
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,6 +31,9 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans text-gray-900 bg-[#FAFAFA]">
         {children}
+        <WhatsAppButton />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

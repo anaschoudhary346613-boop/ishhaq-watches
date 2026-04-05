@@ -29,10 +29,11 @@ export function Footer() {
         </div>
 
         <div>
-          <h3 className="text-[#c5a059] uppercase tracking-widest text-xs font-medium mb-6">Legal</h3>
-          <ul className="space-y-4 text-sm text-gray-400">
-            <li><Link href="#" className="hover:text-white transition-colors">Terms & Conditions</Link></li>
-            <li><Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+          <h3 className="text-[#c5a059] uppercase tracking-widest text-xs font-medium mb-6">Global Presence</h3>
+          <ul className="space-y-4 text-[10px] uppercase tracking-widest text-gray-500">
+            <li>London • Mayfair</li>
+            <li>Dubai • DIFC</li>
+            <li>Mumbai • BKC</li>
           </ul>
         </div>
       </div>

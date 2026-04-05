@@ -143,12 +143,12 @@ export default function AdminDashboard() {
             </div>
           ) : (
             recentOrders.map((order) => (
-              <div key={order.id} className="flex items-center justify-between px-6 py-4 hover:bg-gray-50">
+              <div key={order.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-6 py-4 hover:bg-gray-50 gap-4">
                 <div>
                   <p className="font-medium text-sm text-gray-900">{order.customer_name}</p>
                   <p className="text-xs text-gray-400">{order.email} · {new Date(order.created_at).toLocaleDateString("en-IN")}</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-start">
                   <span className="font-medium text-sm">₹{order.total_amount?.toLocaleString("en-IN")}</span>
                   <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${statusColor(order.status)}`}>
                     {order.status}
