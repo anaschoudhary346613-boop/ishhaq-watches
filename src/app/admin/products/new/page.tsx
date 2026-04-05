@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
+import { ArrowLeft, CheckCircle2, XCircle, Upload } from "lucide-react";
 import { ConnectionDiagnostic } from "@/components/admin/ConnectionDiagnostic";
 
 export default function AddProductPage() {
